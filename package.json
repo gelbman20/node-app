@@ -1,0 +1,28 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gelbman20/node-app.git"
+  },
+  "author": "Andrii Helever <gelbman20@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gelbman20/node-app/issues"
+  },
+  "homepage": "https://github.com/gelbman20/node-app#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.9",
+    "pug": "^3.0.2"
+  },
+  "devDependencies": {
+    "eslint": "^7.30.0"
+  }
+}
