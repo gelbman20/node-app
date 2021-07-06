@@ -1,15 +1,15 @@
 const express = require('express')
+const router = require('./router')
 
 const app = express()
+
 
 app.use(express.static('public'))
 app.set('view engine', 'pug')
 
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
-app.get('/', (req, res) => {
-    res.render('index', { title: 'Node app'})
-})
+app.use('/', router)
 
-app.listen(3000, () => {
-
-})
+module.exports = app
