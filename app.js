@@ -1,6 +1,7 @@
 require('dotenv').config()
 const express = require('express')
 const session = require('express-session')
+const flash = require('express-flash')
 const MongoStore = require('connect-mongo')
 const router = require('./router')
 const mongoUrl = process.env.MONGOURL
@@ -18,6 +19,7 @@ const sessionOptions = session({
 
 const app = express()
 app.use(sessionOptions)
+app.use(flash())
 
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())

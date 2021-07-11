@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt')
 const validator = require('validator')
+const md5 = require('md5')
 const errorLabels = require('../helpers/errorLabels')
 const DB = require('../db')
 
@@ -103,7 +104,13 @@ User.prototype.register = async function () {
     this.clearUp()
     await this.validate()
 
-    if (!this.errors.length) return Promise.resolve(DB.saveUser(this.data))
+    const { username, email } = await DB.saveUser(this.data)
+
+    if (!this.errors.length) return Promise.resolve({
+      username,
+      email,
+      avatar: this.getAvatar(email)
+    })
 
     return Promise.reject(this.errors)
 
@@ -111,5 +118,9 @@ User.prototype.register = async function () {
 }
 
 User.prototype.logout = function () {}
+
+User.prototype.getAvatar = function (email) {
+  return `https://gravatar.com/avatar/${md5(email)}?s=128`
+}
 
 module.exports = User
