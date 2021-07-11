@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt')
 const validator = require('validator')
 const errorLabels = require('../helpers/errorLabels')
 const DB = require('../db')
@@ -82,7 +83,20 @@ User.prototype.validate = async function () {
   }
 }
 
-User.prototype.login = function () {}
+User.prototype.login = async function () {
+  try {
+    this.clearUp()
+    const { username, password } = this.data
+    const user = await DB.getUser({ username })
+
+    if (user && bcrypt.compareSync(password, user.password)) {
+      return Promise.resolve(username)
+    }
+
+    return Promise.reject('Invalid username or password')
+
+  } catch (error) { return error }
+}
 
 User.prototype.register = async function () {
   try {
