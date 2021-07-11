@@ -29,7 +29,7 @@ User.prototype.clearUp = function () {
   }
 }
 
-User.prototype.validate = function () {
+User.prototype.validate = async function () {
   const { username, email, password } = this.data
 
   if (!username.length) {
@@ -67,27 +67,33 @@ User.prototype.validate = function () {
   if (password.length > 30) {
     this.errors.push(errorLabels.maxLength(30, 'Password'))
   }
+
+  if (!this.errors.length) {
+    const checkUsername = DB.getUser({ username })
+    const checkEmail = DB.getUser({ email })
+
+    const response = await Promise.all([checkUsername, checkEmail])
+
+    const usernameExist = response[0]
+    const emailExist = response[1]
+
+    usernameExist && this.errors.push('That username is already taken.')
+    emailExist && this.errors.push('That email is already taken.')
+  }
 }
 
 User.prototype.login = function () {}
 
-User.prototype.register = function () {
-  this.clearUp()
-  this.validate()
+User.prototype.register = async function () {
+  try {
+    this.clearUp()
+    await this.validate()
 
-  return new Promise((resolve, reject) => {
-    if (!this.errors.length) {
-      DB.saveUser(this.data)
-        .then((response) => {
-          resolve(response)
-        })
-        .catch((errors) => {
-          reject(errors)
-        })
-    } else {
-      reject(this.errors)
-    }
-  })
+    if (!this.errors.length) return Promise.resolve(DB.saveUser(this.data))
+
+    return Promise.reject(this.errors)
+
+  } catch (error) { return error }
 }
 
 User.prototype.logout = function () {}
