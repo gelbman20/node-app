@@ -7,10 +7,12 @@ exports.home = function (req, res) {
 exports.register = function (req, res) {
   const user = new User(req.body)
   user.register()
-    .then(() => {
+    .then((response) => {
+      console.log(response)
       res.send('Thanks for registrations')
     })
     .catch((errors) => {
+      console.log(errors)
       res.send(errors)
     })
 }

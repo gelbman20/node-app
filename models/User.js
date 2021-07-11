@@ -1,5 +1,6 @@
 const validator = require('validator')
 const errorLabels = require('../helpers/errorLabels')
+const DB = require('../db')
 
 const User = function (data) {
   this.data = data
@@ -76,7 +77,13 @@ User.prototype.register = function () {
 
   return new Promise((resolve, reject) => {
     if (!this.errors.length) {
-      resolve(this.data)
+      DB.saveUser(this.data)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((errors) => {
+          reject(errors)
+        })
     } else {
       reject(this.errors)
     }
