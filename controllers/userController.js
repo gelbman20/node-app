@@ -15,7 +15,11 @@ exports.login = async function (req, res) {
 
 exports.register = async function (req, res) {
   try {
-    await new User(req.body).register()
-    res.send('Thanks for registrations')
+    const user = await new User(req.body).register()
+    req.session.user = {
+      username: user.username,
+      email: user.email
+    }
+    req.session.save(() => res.redirect('/'))
   } catch (error) { res.send(error) }
 }
