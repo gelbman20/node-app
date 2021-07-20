@@ -19,10 +19,16 @@ exports.home = function (req, res) {
 
 exports.login = async function (req, res) {
   try {
-    const username = await new User(req.body).login()
-    res.send(username)
-  } catch (error) {
-    res.send(error)
+    const user = await new User(req.body).login()
+    req.session.user = {
+      username: user.username,
+      email: user.email,
+      avatar: user.avatar
+    }
+    req.session.save(() => res.redirect('/'))
+  } catch (errors) {
+    req.flash('loginErrors', errors)
+    res.redirect('/')
   }
 }
 

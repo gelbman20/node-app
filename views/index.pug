@@ -7,14 +7,17 @@ block content
   // Main
   main
     .container.py-md-5
+      - if (messages.loginErrors)
+        .alert.alert-danger= messages.loginErrors
       .row.align-items-center
         .col-lg-7.py-3.py-md-5
           h1.display-3 Remember Writing?
           p.lead.text-muted Are you sick of short tweets and impersonal &ldquo;shared&rdquo; posts that are reminiscent of the late 90&rsquo;s email forwards? We believe getting back to actually writing is the key to enjoying the internet again.
         .col-lg-5.pl-lg-5.pb-3.py-lg-5
           - if (messages.errors)
-            each error in messages.errors
-              .alert.alert-danger= error
+            .mb-3
+              each error in messages.errors
+                .alert.alert-danger.mb-1= error
           form#registration-form(action='/register' method='POST')
             .form-group
               label.text-muted.mb-1(for='username-register'): small Username
