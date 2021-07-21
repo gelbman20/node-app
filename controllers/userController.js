@@ -25,6 +25,7 @@ exports.login = async function (req, res) {
   try {
     const user = await new User(req.body).login()
     req.session.user = {
+      _id: user._id,
       username: user.username,
       email: user.email,
       avatar: user.avatar
@@ -40,6 +41,7 @@ exports.register = async function (req, res) {
   try {
     const user = await new User(req.body).register()
     req.session.user = {
+      _id: user._id,
       username: user.username,
       email: user.email,
       avatar: user.avatar
