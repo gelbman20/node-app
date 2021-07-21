@@ -9,7 +9,6 @@ const appInit = async (callback) => {
   try {
     console.time('MongoDB Connection')
     await mongoose.connect(mongoUri, { useUnifiedTopology: true, useNewUrlParser: true })
-    console.timeEnd('MongoDB Connection')
 
     const userScheme = new Schema({
       username: String,
@@ -17,6 +16,14 @@ const appInit = async (callback) => {
       password: String
     })
     const User = mongoose.model('User', userScheme)
+
+    const postScheme = new Schema({
+      title: String,
+      body: String,
+      createdDate: { type: Date, default: new Date() },
+      author: mongoose.Types.ObjectId
+    })
+    const Post = mongoose.model('Post', postScheme)
 
     module.exports = class DB {
       static saveUser ({ username, email, password }) {
@@ -28,6 +35,19 @@ const appInit = async (callback) => {
 
       static getUser (user) {
         return User.findOne(user).exec()
+      }
+
+      /**
+       *
+       * @param {Object} [data]
+       * @param {String} [data.title]
+       * @param {String} [data.body]
+       * @param {Date} [data.createdDate]
+       * @param {ObjectID} [data.author]
+       * @returns {Promise<Document<any, any, unknown>>}
+       */
+      static savePost (data) {
+        return new Post(data).save()
       }
     }
 
@@ -42,6 +62,6 @@ appInit(() => {
   app.listen(process.env.PORT || 3000, () => {
     console.log('Mongo connection status: Success')
   })
-}) 
-  .then(() => {})
-  .catch(() => {})
+})
+  .then(() => console.timeEnd('MongoDB Connection'))
+  .catch(() => console.timeEnd('MongoDB Connection'))
