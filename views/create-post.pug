@@ -14,7 +14,7 @@ block content
         .container.py-md-5.container--narrow
             .card
                 .card-body
-                    form(action='#' method='POST')
+                    form(action='/create-post' method='POST')
                         .form-group
                             label.text-muted.mb-1(for='post-title'): small Title
                             input#post-title.form-control.form-control-lg.form-control-title(required='' name='title' type='text' placeholder='' autocomplete='off')
