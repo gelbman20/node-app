@@ -2,7 +2,6 @@ const User = require('../models/User')
 
 exports.mustBeLoggedIn = function (req, res, next) {
   const { user } = req.session
-  
   if (user) {
     next()
   } else {
@@ -15,13 +14,7 @@ exports.home = function (req, res) {
   const user = req.session.user || null
 
   if (user) {
-    const { username, avatar } = user
-
-    res.render('home-logged', {
-      title: `Welcome ${username} | Node app`,
-      username,
-      avatar
-    })
+    res.render('home-logged')
     return true
   }
 
