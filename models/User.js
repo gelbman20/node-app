@@ -93,9 +93,9 @@ User.prototype.login = async function () {
     this.clearUp()
     const { username, password } = this.data
     const user = await DB.getUser({ username })
-
     if (user && bcrypt.compareSync(password, user.password)) {
       return Promise.resolve({
+        _id: user._id,
         username,
         email: user.email,
         avatar: this.getAvatar(user.email)
@@ -113,8 +113,9 @@ User.prototype.register = async function () {
     await this.validate()
 
     if (!this.errors.length) {
-      const { username, email } = await DB.saveUser(this.data)
+      const { _id, username, email } = await DB.saveUser(this.data)
       return Promise.resolve({
+        _id,
         username,
         email,
         avatar: this.getAvatar(email)
