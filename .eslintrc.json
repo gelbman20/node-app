@@ -25,6 +25,16 @@
         "semi": [
             "error",
             "never"
-        ]
+        ],
+        "eol-last": [
+            "error",
+            "always"
+        ],
+        "no-trailing-spaces": "error",
+        "no-mixed-spaces-and-tabs": "error",
+        "object-curly-spacing": ["error", "always"],
+        "computed-property-spacing": ["error", "never"],
+        "space-in-parens": ["error", "never"],
+        "array-bracket-spacing": ["error", "never"]
     }
 }
