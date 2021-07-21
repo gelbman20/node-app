@@ -1,5 +1,16 @@
 const User = require('../models/User')
 
+exports.mustBeLoggedIn = function (req, res, next) {
+  const { user } = req.session
+  
+  if (user) {
+    next()
+  } else {
+    req.flash('loginErrors', 'You must be logged in to perform this action.')
+    req.session.save(() => res.redirect('/'))
+  }
+}
+
 exports.home = function (req, res) {
   const user = req.session.user || null
 
@@ -28,7 +39,7 @@ exports.login = async function (req, res) {
     req.session.save(() => res.redirect('/'))
   } catch (errors) {
     req.flash('loginErrors', errors)
-    res.redirect('/')
+    req.session.save(() => res.redirect('/'))
   }
 }
 
@@ -44,7 +55,7 @@ exports.register = async function (req, res) {
     req.session.save(() => res.redirect('/'))
   } catch (errors) {
     req.flash('errors', errors)
-    res.redirect('/')
+    req.session.save(() => res.redirect('/'))
   }
 }
 
