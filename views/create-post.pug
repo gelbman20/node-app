@@ -1,0 +1,20 @@
+extends layouts/default
+
+block content
+    // Header
+    include sections/header
+
+    // Main
+    main
+        .container.py-md-5.container--narrow
+            form(action='#' method='POST')
+                .form-group
+                    label.text-muted.mb-1(for='post-title'): small Title
+                    input#post-title.form-control.form-control-lg.form-control-title(required='' name='title' type='text' placeholder='' autocomplete='off')
+                .form-group
+                    label.text-muted.mb-1(for='post-body'): small Body Content
+                    textarea#post-body.body-content.tall-textarea.form-control(required='' name='body' type='text')
+                button.btn.btn-primary Save New Post
+
+    // Footer
+    include sections/footer
