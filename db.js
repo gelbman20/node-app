@@ -5,9 +5,11 @@ const Schema = mongoose.Schema
 const mongoUri = process.env.MONGOURL
 
 
-const appInit = async () => {
+const appInit = async (callback) => {
   try {
+    console.time('MongoDB Connection')
     await mongoose.connect(mongoUri, { useUnifiedTopology: true, useNewUrlParser: true })
+    console.timeEnd('MongoDB Connection')
 
     const userScheme = new Schema({
       username: String,
@@ -29,13 +31,17 @@ const appInit = async () => {
       }
     }
 
-    const app = require('./app')
-    app.listen(process.env.PORT || 3000, () => {
-      console.log('Mongo connection status: Success')
-    })
+    callback()
   } catch (error) {
     console.log(`Mongo connection status: Error \n ${error}`)
   }
 }
 
-appInit()
+appInit(() => {
+  const app = require('./app')
+  app.listen(process.env.PORT || 3000, () => {
+    console.log('Mongo connection status: Success')
+  })
+}) 
+  .then(() => {})
+  .catch(() => {})
