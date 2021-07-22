@@ -1,9 +1,14 @@
+include ../_config
+
 html
   head
     meta(name='viewport' content='width=device-width, initial-scale=1')
     link(rel="shortcut icon" href='/favicon/favicon.ico' type='image/x-icon')
     link(rel='stylesheet' href='/css/libs.bundle.css')
-    link(rel='stylesheet' href='/css/theme-dark.bundle.css')
+    - if (theme === 'light')
+      link(rel='stylesheet' href='/css/theme.bundle.css')
+    - if (theme === 'dark')
+      link(rel='stylesheet' href='/css/theme-dark.bundle.css')
     link(rel='stylesheet' href='/css/custom.css')
     title= title
   body.d-flex.flex-column
