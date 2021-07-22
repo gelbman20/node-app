@@ -7,21 +7,17 @@ block content
     // Main
     main
         .container
-            .header.mt-md-5
-                .header-body
-                    h6.header-pretitle Overview
-                    h1.header-title Create post
-        .container.py-md-5.container--narrow
-            .card
-                .card-body
-                    form(action='/create-post' method='POST')
-                        .form-group
-                            label.text-muted.mb-1(for='post-title'): small Title
-                            input#post-title.form-control.form-control-lg.form-control-title(required='' name='title' type='text' placeholder='' autocomplete='off')
-                        .form-group
-                            label.text-muted.mb-1(for='post-body'): small Body Content
-                            textarea#post-body.body-content.tall-textarea.form-control(data-autosize rows="4" required='' name='body')
-                        button.btn.btn-lg.btn-primary Save New Post
+            .header.mt-md-5: .header-body
+                h6.header-pretitle Overview
+                h1.header-title Create post
+            .card: .card-body: form(action='/create-post' method='POST')
+                .form-group
+                    label.text-muted.mb-1(for='post-title'): small Title
+                    input#post-title.form-control.form-control-lg.form-control-title(required='' name='title' type='text' placeholder='' autocomplete='off')
+                .form-group
+                    label.text-muted.mb-1(for='post-body'): small Body Content
+                    textarea#post-body.body-content.tall-textarea.form-control(data-autosize rows="4" required='' name='body')
+                button.btn.btn-lg.btn-primary Save New Post
 
     // Footer
     include sections/footer
