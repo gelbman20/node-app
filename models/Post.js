@@ -1,6 +1,32 @@
 const DB = require('../db')
 const getAvatar = require('./User').getAvatar
 
+/**
+ *
+ * @param _id
+ * @param title
+ * @param body
+ * @param author
+ * @param createdDate
+ * @param other
+ * @returns {{createdDate, author: (*&{avatar: string}), _id, title, body}}
+ */
+const defaultPost = ({ _id, title, body, author, createdDate }) => {
+  const post = {
+    _id,
+    title,
+    body,
+    createdDate,
+    author: {
+      ...author[0]._doc,
+      avatar: getAvatar(author[0]._doc.email),
+    }
+  }
+  delete post.author.password
+
+  return post
+}
+
 module.exports = class Post {
   /**
    *
@@ -78,25 +104,23 @@ module.exports = class Post {
    */
   static async getOne (id) {
     try {
-      const { _id, title, body, author, createdDate } = await DB.getPost(id)
-      const post = {
-        _id,
-        title,
-        body,
-        createdDate,
-        author: {
-          ...author[0]._doc,
-          avatar: getAvatar(author[0]._doc.email),
-        }
+      const post = await DB.getPost(id)
+      return Promise.resolve(defaultPost(post))
+    } catch (errors) {
+      return Promise.reject(errors)
+    }
+  }
+
+  static async getAllByAuthorId (id) {
+    try {
+      const posts = await DB.getAllbyAuthorId(id)
+      if (posts) {
+        return Promise.resolve(posts)
       }
 
-      delete post.author.password
-
-      console.log(post)
-
-      return Promise.resolve(post)
-    } catch (e) {
-      return Promise.reject(e)
+      return Promise.resolve([])
+    } catch (errors) {
+      return Promise.reject(errors)
     }
   }
 }
