@@ -1,0 +1,17 @@
+extends layouts/default
+
+block content
+  // Header
+  include sections/header
+
+  main
+    .container.py-md-5
+      .text-center
+        h2 Whoops, we cannot find that page.
+        p.lead.text-muted
+          | You can always visit the
+          a.mx-1.d-inline-block(href='/') homepage
+          |  to get a fresh start.
+
+  // Footer
+  include sections/footer
