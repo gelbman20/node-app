@@ -1,0 +1,30 @@
+extends layouts/default
+
+block content
+  // Header
+  include sections/header
+
+  main
+    .container.py-md-5.container--narrow
+      h2
+        img.avatar.rounded-circle.mr-2(src= userProfile.avatar)
+        span= userProfile.username
+        form.ml-2.d-inline(action='#' method='POST')
+          button.btn.btn-primary.btn-sm
+            | Follow
+            i.fas.fa-user-plus
+          // <button class="btn btn-danger btn-sm">Stop Following <i class="fas fa-user-times"></i></button>
+      .profile-nav.nav.nav-tabs.pt-2.mb-4
+        a.profile-nav-link.nav-item.nav-link.active(href='#') Posts: 3
+        a.profile-nav-link.nav-item.nav-link(href='#') Followers: 3
+        a.profile-nav-link.nav-item.nav-link(href='#') Following: 2
+      if (posts && posts.length)
+        .list-group
+          each post in posts
+            a.list-group-item.list-group-item-action(href=`/post/${post._id}`)
+              img.avatar.rounded-circle.mr-2.avatar-xs(src= userProfile.avatar)
+              strong.mr2.d-inline-block= post.title
+              span.d-inline-block.ml-2= `on ${post.createdDate.getMonth() + 1}/${post.createdDate.getDay()}/${post.createdDate.getFullYear()}`
+
+  // Footer
+  include sections/footer
