@@ -1,4 +1,5 @@
 const User = require('../models/User')
+const Post = require('../models/Post')
 
 exports.mustBeLoggedIn = function (req, res, next) {
   const { user } = req.session
@@ -56,4 +57,32 @@ exports.register = async function (req, res) {
 
 exports.logout = (req, res) => {
   req.session.destroy(() => res.redirect('/'))
+}
+
+exports.ifUserExists = async (req, res, next) => {
+  try {
+    const user = await User.getUser(req.params.username)
+    if (user) {
+      req.userProfile = user
+      next()
+    } else {
+      res.render('404')
+    }
+  } catch (errors) {
+    res.render('404')
+  }
+}
+
+exports.profilePostsScreen = async (req, res) => {
+  try {
+    const { userProfile } = req
+    if (userProfile) {
+      let posts = await Post.getAllByAuthorId(userProfile._id)
+      res.render('profile', { userProfile, posts })
+    } else {
+      res.render('404')
+    }
+  } catch (errors) {
+    res.render('404')
+  }
 }
