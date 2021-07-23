@@ -58,6 +58,10 @@ const appInit = async (callback) => {
       static getPost (id) {
         return Post.findById(id).populate('author').exec()
       }
+
+      static getAllbyAuthorId (id) {
+        return Post.find({ author: id }).exec()
+      }
     }
 
     callback()
