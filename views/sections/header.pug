@@ -1,8 +1,14 @@
 header.header-bar.mb-3.bg-hero: .container.d-flex.flex-column.flex-md-row.align-items-center.p-3
   h4.my-0.mr-md-auto.font-weight-normal.text-white: a(href='/') Node App
-  .flex-row.my-3.my-md-0
-    a.mr-3.h2(href='#' title='Search' data-toggle='tooltip' data-placement='bottom' style='position: relative; top: 4px;'): i.fe.fe-search(style='pointer-events: none;')
-    span.mr-3.h2.text-white(title='Chat' data-toggle='tooltip' data-placement='bottom' style='position: relative; top: 4px;'): i.fe.fe-message-circle(style='pointer-events: none;')
-    a.mr-2(href='#'): img(title='My Profile' data-toggle='tooltip' data-placement='bottom' style='width: 32px; height: 32px; border-radius: 16px;' src= user.avatar)
-    a.btn.btn-sm.btn-success.mr-2(href='/create-post') Create Post
-    form.d-inline(action='/logout' method='POST'): button.btn.btn-sm.btn-secondary Sign Out
+  if (user)
+    .flex-row.my-3.my-md-0
+      a.mr-3.h2(href='#' title='Search' data-toggle='tooltip' data-placement='bottom' style='position: relative; top: 4px;'): i.fe.fe-search(style='pointer-events: none;')
+      span.mr-3.h2.text-white(title='Chat' data-toggle='tooltip' data-placement='bottom' style='position: relative; top: 4px;'): i.fe.fe-message-circle(style='pointer-events: none;')
+      a.mr-2(href='#'): img(title='My Profile' data-toggle='tooltip' data-placement='bottom' style='width: 32px; height: 32px; border-radius: 16px;' src= user.avatar)
+      a.btn.btn-sm.btn-success.mr-2(href='/create-post') Create Post
+      form.d-inline(action='/logout' method='POST'): button.btn.btn-sm.btn-secondary Sign Out
+  else
+    form.mb-0.pt-2.pt-md-0(action='/login' method='POST'): .row.align-items-center
+      .col-md.mr-0.pr-md-0.mb-3.mb-md-0: input.form-control.form-control-sm.input-dark(name='username' type='text' placeholder='Username' )
+      .col-md.mr-0.pr-md-0.mb-3.mb-md-0: input.form-control.form-control-sm.input-dark(name='password' type='password' placeholder='Password')
+      .col-md-auto: button.btn.btn-primary.btn-sm Sign In
