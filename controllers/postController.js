@@ -7,9 +7,9 @@ exports.viewCreateScreen = function (req, res) {
 exports.create = async function (req, res) {
   try {
     const post = await new Post(req.body, req.session.user._id).create()
-    res.send(`Post has been successfully created!, ${post}`)
+    res.redirect(`/post/${post._id}`)
   } catch (errors) {
-    res.send(errors)
+    res.render('404')
   }
 }
 
