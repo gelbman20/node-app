@@ -11,12 +11,13 @@ const getAvatar = require('./User').getAvatar
  * @param other
  * @returns {{createdDate, author: (*&{avatar: string}), _id, title, body}}
  */
-const defaultPost = ({ _id, title, body, author, createdDate }) => {
+const defaultPost = ({ _id, title, body, author, createdDate }, visitorId) => {
   const post = {
     _id,
     title,
     body,
     createdDate,
+    isAuthor: visitorId == author[0]._id,
     author: {
       ...author[0]._doc,
       avatar: getAvatar(author[0]._doc.email),
@@ -102,10 +103,10 @@ module.exports = class Post {
    *
    * @param {ObjectID} id
    */
-  static async getOne (id) {
+  static async getOne (id, visitorId) {
     try {
       const post = await DB.getPost(id)
-      return Promise.resolve(defaultPost(post))
+      return Promise.resolve(defaultPost(post, visitorId))
     } catch (errors) {
       return Promise.reject(errors)
     }

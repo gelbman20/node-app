@@ -15,7 +15,7 @@ exports.create = async function (req, res) {
 
 exports.viewSingle = async function (req, res) {
   try {
-    const post = await Post.getOne(req.params.id)
+    const post = await Post.getOne(req.params.id, req.visitorId)
     res.render('post', { post })
   } catch (errors) {
     res.render('404')
