@@ -1,4 +1,5 @@
 const DB = require('../db')
+const getAvatar = require('./User').getAvatar
 
 module.exports = class Post {
   /**
@@ -68,6 +69,34 @@ module.exports = class Post {
       return Promise.reject(this.errors)
     } catch (errors) {
       return Promise.reject(errors)
+    }
+  }
+
+  /**
+   *
+   * @param {ObjectID} id
+   */
+  static async getOne (id) {
+    try {
+      const { _id, title, body, author, createdDate } = await DB.getPost(id)
+      const post = {
+        _id,
+        title,
+        body,
+        createdDate,
+        author: {
+          ...author[0]._doc,
+          avatar: getAvatar(author[0]._doc.email),
+        }
+      }
+
+      delete post.author.password
+
+      console.log(post)
+
+      return Promise.resolve(post)
+    } catch (e) {
+      return Promise.reject(e)
     }
   }
 }

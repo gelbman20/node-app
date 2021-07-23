@@ -1,38 +1,36 @@
 extends layouts/default
 
 block content
-    // Header
-    include sections/header
+  // Header
+  include sections/header
 
-    main
-        .container.py-md-5.container--narrow
-            .header: .header-body: h1.header-title Example Post Title Here
-            .card
-                .dropdown.card-dropdown
-                    a.dropdown-ellipses.dropdown-toggle#dropdownMenuButton(href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'): i.fe.fe-more-vertical
-                    .dropdown-menu.dropdown-menu-end.dropdown-menu-right(aria-labelledby='dropdownMenuButton')
-                        a.dropdown-item(href='#') Edit
-                        form.mb-0(action='#' method='POST'): button.dropdown-item.btn.btn-link.link-danger Delete
-                .card-body
-                    // h2.mb-4.pr-4 Example Post Title Here
-                    .row.align-items-center
-                        .col-auto: a.avatar(href='#!'): img.avatar-img.rounded-circle(src='/img/avatars/profiles/avatar-1.jpg' alt='...')
-                        .col.ms-n2
-                            // Title
-                            h4.mb-1 Dianna Smiley
-                            // Time
-                            p.card-text.small.text-muted
-                                span.fe.fe-clock.mr-1
-                                time(datetime='2018-05-24') 4hr ago
-                    // / .row
-                hr.my-0
-                .card-body
-                    p My roommate yells at me when I destroy things, but I do what I want.
-                    p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Numquam praesentium laboriosam unde fuga accusamus reiciendis laudantium quis consequatur, beatae temporibus nemo, tempora voluptatum, perspiciatis accusantium ullam molestiae cupiditate incidunt architecto.
-                    p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Numquam praesentium laboriosam unde fuga accusamus reiciendis laudantium quis consequatur, beatae temporibus nemo, tempora voluptatum, perspiciatis accusantium ullam molestiae cupiditate incidunt architecto.
+  main
+    .container.py-md-5.container--narrow
+      .header: .header-body: h1.header-title= post.title
+      .card
+        .dropdown.card-dropdown
+          a.dropdown-ellipses.dropdown-toggle#dropdownMenuButton(href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'): i.fe.fe-more-vertical
+          .dropdown-menu.dropdown-menu-end.dropdown-menu-right(aria-labelledby='dropdownMenuButton')
+            a.dropdown-item(href='#') Edit
+            form.mb-0(action='#' method='POST'): button.dropdown-item.btn.btn-link.link-danger Delete
+        .card-body
+          // h2.mb-4.pr-4 Example Post Title Here
+          .row.align-items-center
+            .col-auto: a.avatar(href=`/users/${post.author._id}`): img.avatar-img.rounded-circle(src= post.author.avatar alt='...')
+            .col.ms-n2
+              // Title
+              h4.mb-1 Posted by
+                a.link-primary.ml-1(href=`/users/${post.author._id}`)= post.author.username
+              // Time
+              p.card-text.small.text-muted
+                span.fe.fe-clock
+                span.mx-1 Created at
+                time(datetime='2018-05-24')= `${post.createdDate.getMonth() + 1}/${post.createdDate.getDate()}/${post.createdDate.getFullYear()}`
+          // / .row
+        hr.my-0
+        .card-body= post.body
 
-
-    // Footer
-    include sections/footer
+  // Footer
+  include sections/footer
 
 

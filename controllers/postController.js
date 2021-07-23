@@ -13,6 +13,11 @@ exports.create = async function (req, res) {
   }
 }
 
-exports.viewSingle = function (req, res) {
-  res.render('post')
+exports.viewSingle = async function (req, res) {
+  try {
+    const post = await Post.getOne(req.params.id)
+    res.render('post', { post })
+  } catch (errors) {
+    res.render('404')
+  }
 }

@@ -21,7 +21,7 @@ const appInit = async (callback) => {
       title: String,
       body: String,
       createdDate: { type: Date, default: new Date() },
-      author: mongoose.Types.ObjectId
+      author: [{ type: Schema.Types.ObjectId, ref: 'User' }]
     })
     const Post = mongoose.model('Post', postScheme)
 
@@ -48,6 +48,15 @@ const appInit = async (callback) => {
        */
       static savePost (data) {
         return new Post(data).save()
+      }
+
+      /**
+       *
+       * @param {Object} id
+       * @returns {Promise<Document<any, any, unknown> | null>}
+       */
+      static getPost (id) {
+        return Post.findById(id).populate('author').exec()
       }
     }
 
