@@ -1,0 +1,27 @@
+extends layouts/default
+
+block content
+  // Header
+  include sections/header
+
+  // Main
+  main
+    .container
+      .header.mt-md-5: .header-body
+        h6.header-pretitle Overview
+        h1.header-title Edit post
+
+      include components/flash
+
+      .card: .card-body: form(action=`/post/${post._id}/edit` method='POST')
+        .form-group
+          label.text-muted.mb-1(for='post-title'): small Title
+          input#post-title.form-control.form-control-lg.form-control-title(required='' value= post.title name='title' type='text' placeholder='' autocomplete='off')
+        .form-group
+          label.text-muted.mb-1(for='post-body'): small Body Content
+          textarea#post-body.body-content.tall-textarea.form-control(data-autosize rows="4" required='' name='body')= post.body
+        button.btn.btn-lg.btn-primary.mr-3 Edit Post
+        a.btn.btn-lg.btn-secondary(href=`/post/${post._id}`) Back to post
+
+  // Footer
+  include sections/footer
