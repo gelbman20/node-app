@@ -33,10 +33,12 @@ module.exports = class Post {
    *
    * @param {Object} [data]
    * @param {ObjectID} userId
+   * @param {ObjectID} postId
    */
-  constructor(data, userId) {
+  constructor(data, userId, postId) {
     this.data = data
     this.userId = userId
+    this.postId = postId
     this.errors = []
   }
 
@@ -99,6 +101,23 @@ module.exports = class Post {
     }
   }
 
+  async update () {
+    try {
+      this._cleanUp()
+      this._validate()
+
+      if (!this.errors.length) {
+        const { title, body, createdDate } = this.data
+        const post = await DB.updatePost(this.postId, { title, body, createdDate })
+        return Promise.resolve(post)
+      }
+
+      return Promise.reject(this.errors)
+    } catch (errors) {
+      return Promise.reject(errors)
+    }
+  }
+
   /**
    *
    * @param {ObjectID} id
@@ -114,7 +133,7 @@ module.exports = class Post {
 
   static async getAllByAuthorId (id) {
     try {
-      const posts = await DB.getAllbyAuthorId(id)
+      const posts = await DB.getAllByAuthorId(id)
       if (posts) {
         return Promise.resolve(posts)
       }
