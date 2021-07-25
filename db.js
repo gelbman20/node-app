@@ -8,7 +8,7 @@ const mongoUri = process.env.MONGOURL
 const appInit = async (callback) => {
   try {
     console.time('MongoDB Connection')
-    await mongoose.connect(mongoUri, { useUnifiedTopology: true, useNewUrlParser: true })
+    await mongoose.connect(mongoUri, { useUnifiedTopology: true, useNewUrlParser: true, useFindAndModify: false })
 
     const userScheme = new Schema({
       username: String,
@@ -23,6 +23,7 @@ const appInit = async (callback) => {
       createdDate: { type: Date, default: new Date() },
       author: [{ type: Schema.Types.ObjectId, ref: 'User' }]
     })
+
     const Post = mongoose.model('Post', postScheme)
 
     module.exports = class DB {
@@ -52,6 +53,16 @@ const appInit = async (callback) => {
 
       /**
        *
+       * @param id
+       * @param data
+       * @returns {QueryWithHelpers<EnforceDocument<unknown, {}> | null, EnforceDocument<unknown, {}>, {}, unknown>}
+       */
+      static updatePost (id, data) {
+        return Post.findByIdAndUpdate(id, data)
+      }
+
+      /**
+       *
        * @param {Object} id
        * @returns {Promise<Document<any, any, unknown> | null>}
        */
@@ -59,7 +70,7 @@ const appInit = async (callback) => {
         return Post.findById(id).populate('author').exec()
       }
 
-      static getAllbyAuthorId (id) {
+      static getAllByAuthorId (id) {
         return Post.find({ author: id }).exec()
       }
     }
