@@ -5,7 +5,9 @@ block content
   include sections/header
 
   main
-    .container.py-md-5.container--narrow
+    .container.py-md-5
+      include components/flash
+
       h2
         img.avatar.rounded-circle.mr-2(src= userProfile.avatar)
         span= userProfile.username

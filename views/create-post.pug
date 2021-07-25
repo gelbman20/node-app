@@ -10,6 +10,7 @@ block content
             .header.mt-md-5: .header-body
                 h6.header-pretitle Overview
                 h1.header-title Create post
+            include components/flash
             .card: .card-body: form(action='/create-post' method='POST')
                 .form-group
                     label.text-muted.mb-1(for='post-title'): small Title

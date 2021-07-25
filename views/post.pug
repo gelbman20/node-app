@@ -7,12 +7,13 @@ block content
   main
     .container.py-md-5.container--narrow
       .header: .header-body: h1.header-title= post.title
+      include components/flash
       .card
         if (post.isAuthor)
           .dropdown.card-dropdown
             a.dropdown-ellipses.dropdown-toggle#dropdownMenuButton(href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'): i.fe.fe-more-vertical
             .dropdown-menu.dropdown-menu-end.dropdown-menu-right(aria-labelledby='dropdownMenuButton')
-              a.dropdown-item(href='#') Edit
+              a.dropdown-item(href= `/post/${post._id}/edit`) Edit
               form.mb-0(action='#' method='POST'): button.dropdown-item.btn.btn-link.link-danger Delete
         .card-body
           // h2.mb-4.pr-4 Example Post Title Here
