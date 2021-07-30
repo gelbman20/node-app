@@ -6,7 +6,7 @@ exports.mustBeLoggedIn = function (req, res, next) {
   if (user) {
     next()
   } else {
-    req.flash('loginErrors', 'You must be logged in to perform this action.')
+    req.flash('errors', 'You must be logged in to perform this action.')
     req.session.save(() => res.redirect('/'))
   }
 }
@@ -33,7 +33,7 @@ exports.login = async function (req, res) {
     }
     req.session.save(() => res.redirect('/'))
   } catch (errors) {
-    req.flash('loginErrors', errors)
+    req.flash('errors', errors)
     req.session.save(() => res.redirect('/'))
   }
 }
