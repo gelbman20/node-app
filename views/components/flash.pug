@@ -1,4 +1,8 @@
 if (errors.length)
-  .alert.alert-danger= errors
+  if (typeof errors === 'object')
+    each error in errors
+      .alert.alert-danger.mb-2= error
+  else
+    .alert.alert-danger= errors
 if (success.length)
   .alert.alert-success= success
