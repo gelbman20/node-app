@@ -1,3 +1,4 @@
+const sanitizeHTML = require('sanitize-html')
 const DB = require('../db')
 const getAvatar = require('./User').getAvatar
 
@@ -14,8 +15,8 @@ const getAvatar = require('./User').getAvatar
 const defaultPost = ({ _id, title, body, author, createdDate }, visitorId) => {
   const post = {
     _id,
-    title,
-    body,
+    title: sanitizeHTML(title.trim(), { allowedTags: [], allowedAttributes: {} }),
+    body: sanitizeHTML(body.trim(), { allowedTags: [], allowedAttributes: {} }),
     createdDate,
     isAuthor: visitorId == author[0]._id,
     author: {

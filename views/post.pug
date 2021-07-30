@@ -30,7 +30,7 @@ block content
                 time(datetime='2018-05-24')= `${post.createdDate.getMonth() + 1}/${post.createdDate.getDate()}/${post.createdDate.getFullYear()}`
           // / .row
         hr.my-0
-        .card-body= post.body
+        .card-body!= filterUserHTML(post.body)
 
   // Footer
   include sections/footer
