@@ -144,4 +144,20 @@ module.exports = class Post {
       return Promise.reject(errors)
     }
   }
+
+  static async deleteOne (id, visitorId) {
+    try {
+      const post = await DB.getPost(id)
+      const { isAuthor } = defaultPost(post, visitorId)
+
+      if (isAuthor) {
+        const deletedPost = await DB.deletePost(id)
+        return Promise.resolve(deletedPost)
+      } else {
+        return Promise.resolve(false)
+      }
+    } catch (errors) {
+      return Promise.reject(errors)
+    }
+  }
 }
