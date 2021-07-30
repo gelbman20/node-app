@@ -53,3 +53,19 @@ exports.edit = async (req, res) => {
     req.session.save(() => res.redirect(`/post/${req.params.id}/edit`))
   }
 }
+
+exports.delete = async (req, res) => {
+  try {
+    const isPostDeleted = await Post.deleteOne(req.params.id, req.visitorId)
+    if (isPostDeleted) {
+      req.flash('success', 'The post hase been successfully deleted')
+      req.session.save(() => res.redirect(`/profile/${req.session.user.username}`))
+    } else {
+      req.flash('errors', 'You don\'t have permission to do this action')
+      req.session.save(() => res.redirect(`/post/${req.params.id}`))
+    }
+  } catch (errors) {
+    req.flash('errors', errors)
+    req.session.save(() => res.redirect(`/post/${req.params.id}`))
+  }
+}
