@@ -73,6 +73,15 @@ const appInit = async (callback) => {
       static getAllByAuthorId (id) {
         return Post.find({ author: id }).exec()
       }
+
+      /**
+       * This function delete Post
+       * @param id
+       * @return {Promise<Document<any, any, unknown> | null>}
+       */
+      static deletePost (id) {
+        return Post.findByIdAndDelete(id).exec()
+      }
     }
 
     callback()
