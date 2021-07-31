@@ -1,0 +1,1 @@
+(()=>{"use strict";new function n(){!function(n,e){if(!(n instanceof e))throw new TypeError("Cannot call a class as a function")}(this,n),console.log("Module Search has been included")}})();
