@@ -22,8 +22,8 @@ html
             span.close-live-search(data-search-close=''): i.fe.fe-x-circle
         .search-overlay-bottom
           .container.container--narrow.py-3
-            .circle-loader
-            .live-search-results.live-search-results--visible
+            .circle-loader(data-search-loader='')
+            .live-search-results(data-live-search-results='')
               .card
                 .list-group.shadow-sm
                   .list-group-item.active
