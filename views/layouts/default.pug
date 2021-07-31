@@ -13,6 +13,38 @@ html
     title= title
   body.d-flex.flex-column
     block content
+    if (user)
+      .search-overlay(data-search-overlay='')
+        .search-overlay-top.shadow-sm
+          .container.container--narrow
+            label.search-overlay-icon(for='live-search-field'): i.fe.fe-search
+            input#live-search-field.live-search-field(type='text' placeholder='What are you interested in?')
+            span.close-live-search(data-search-close=''): i.fe.fe-x-circle
+        .search-overlay-bottom
+          .container.container--narrow.py-3
+            .circle-loader
+            .live-search-results.live-search-results--visible
+              .card
+                .list-group.shadow-sm
+                  .list-group-item.active
+                    strong Search Results
+                    |  (4 items found)
+                  a.list-group-item.list-group-item-action(href='#')
+                    img.avatar-sm.rounded-circle.mr-2(src='https://gravatar.com/avatar/b9216295c1e3931655bae6574ac0e4c2?s=128')
+                    strong.d-inline-block.mr-2 Example Post #1
+                    span.text-muted.small by barksalot on 0/14/2019
+                  a.list-group-item.list-group-item-action(href='#')
+                    img.avatar-sm.rounded-circle.mr-2(src='https://gravatar.com/avatar/b9408a09298632b5151200f3449434ef?s=128')
+                    strong.d-inline-block.mr-2 Example Post #2
+                    span.text-muted.small by brad on 0/12/2019
+                  a.list-group-item.list-group-item-action(href='#')
+                    img.avatar-sm.rounded-circle.mr-2(src='https://gravatar.com/avatar/b9216295c1e3931655bae6574ac0e4c2?s=128')
+                    strong.d-inline-block.mr-2 Example Post #3
+                    span.text-muted.small by barksalot on 0/14/2019
+                  a.list-group-item.list-group-item-action(href='#')
+                    img.avatar-sm.rounded-circle.mr-2(src='https://gravatar.com/avatar/b9408a09298632b5151200f3449434ef?s=128')
+                    strong.d-inline-block.mr-2 Example Post #4
+                    span.text-muted.small by brad on 0/12/2019
     script(src='/js/vendor.bundle.js')
     script(src='/js/theme.bundle.js')
     script(src='/js/app.js')
