@@ -11,7 +11,7 @@ router.post('/register', userController.register)
 router.post('/logout', userController.logout)
 
 // Profile
-router.get('/profile/:username', userController.ifUserExists, userController.profilePostsScreen)
+router.get('/profile/:username', userController.ifUserExists, userController.sharedProfileData, userController.profilePostsScreen)
 
 // Post
 router.get('/create-post', userController.mustBeLoggedIn, postController.viewCreateScreen)
@@ -26,6 +26,7 @@ router.post('/search', postController.search)
 
 // Follow
 router.post('/follow/:username', userController.mustBeLoggedIn, followController.addFollow)
+router.post('/removeFollow/:username', userController.mustBeLoggedIn, followController.removeFollow)
 
 router.get('/404', (req, res) => res.render('404'))
 
