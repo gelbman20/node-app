@@ -160,4 +160,27 @@ module.exports = class Post {
       return Promise.reject(errors)
     }
   }
+
+  static async search (term, visitorId) {
+    try {
+      if (typeof (term) === 'string') {
+        let posts = await DB.getAllPostsByTerm(term)
+        if (posts && posts.length) {
+          posts = posts.map(post => {
+            const resultPost = defaultPost(post, visitorId)
+            resultPost.author._id = null
+            return resultPost
+          })
+
+          return Promise.resolve(posts)
+        } else {
+          return Promise.reject()
+        }
+      } else {
+        return Promise.reject()
+      }
+    } catch (errors) {
+      return Promise.reject(errors)
+    }
+  }
 }
