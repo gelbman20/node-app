@@ -1,8 +1,8 @@
-if (errors.length)
+if (errors && errors !== undefined &&errors.length)
   if (typeof errors === 'object' && errors.length !== 1)
     each error in errors
       .alert.alert-danger.mb-2= error
   else
     .alert.alert-danger= errors
-if (success.length)
+if (success && success !== undefined && success.length)
   .alert.alert-success= success
