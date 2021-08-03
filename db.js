@@ -26,6 +26,13 @@ const appInit = async (callback) => {
 
     const Post = mongoose.model('Post', postScheme)
 
+    const followScheme = new Schema({
+      followedId: mongoose.Types.ObjectId,
+      authorId: mongoose.Types.ObjectId
+    })
+
+    const Follow = mongoose.model('Follow', followScheme)
+
     module.exports = class DB {
       static saveUser ({ username, email, password }) {
         const salt = bcrypt.genSaltSync(10)
@@ -86,6 +93,15 @@ const appInit = async (callback) => {
       static getAllPostsByTerm (term) {
         const regex = new RegExp(term, 'i')
         return Post.find().or([{ title: regex }, { 'body': regex }]).populate('author').exec()
+      }
+
+      /**
+       *
+       * @param {ObjectID} followedId
+       * @param {ObjectId} authorId
+       */
+      static createFollow (followedId, authorId) {
+        return new Follow({ followedId, authorId }).save()
       }
     }
 
