@@ -69,3 +69,16 @@ exports.delete = async (req, res) => {
     req.session.save(() => res.redirect(`/post/${req.params.id}`))
   }
 }
+
+exports.search = async (req, res) => {
+  try {
+    const result = await Post.search(req.body.searchTerm, req.visitorId)
+    if (result && result.length) {
+      res.json(result)
+    } else {
+      res.json([])
+    }
+  } catch (errors) {
+    res.json([])
+  }
+}
