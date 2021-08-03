@@ -1,5 +1,6 @@
 const User = require('../models/User')
 const Post = require('../models/Post')
+const Follow = require('../models/Follow')
 
 exports.mustBeLoggedIn = function (req, res, next) {
   const { user } = req.session
@@ -73,12 +74,29 @@ exports.ifUserExists = async (req, res, next) => {
   }
 }
 
+exports.sharedProfileData = async (req, res, next) => {
+  let isFollowing = false
+
+  try {
+    if (req.session.user) {
+      isFollowing = await Follow.isVisitorFollowing(req.userProfile._id, req.visitorId)
+    }
+
+    req.isFollowing = isFollowing
+    next()
+  } catch (errors) {
+    req.flash('errors', errors)
+    req.session.save(() => res.redirect('404'))
+  }
+
+}
+
 exports.profilePostsScreen = async (req, res) => {
   try {
-    const { userProfile } = req
+    const { userProfile, isFollowing, visitorId } = req
     if (userProfile) {
       let posts = await Post.getAllByAuthorId(userProfile._id)
-      res.render('profile', { userProfile, posts })
+      res.render('profile', { userProfile, posts, isFollowing, visitorId })
     } else {
       res.render('404')
     }
