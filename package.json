@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "nodemon db.js --delay 1"
+    "frontend": "webpack --watch",
+    "watch": "nodemon db.js --ignore frontend --ignore public"
   },
   "repository": {
     "type": "git",
@@ -18,9 +19,14 @@
   },
   "homepage": "https://github.com/gelbman20/node-app#readme",
   "dependencies": {
+    "@babel/core": "^7.14.8",
+    "@babel/preset-env": "^7.14.8",
+    "axios": "^0.21.1",
+    "babel-loader": "^8.2.2",
     "bcrypt": "^5.0.1",
     "connect-mongo": "^4.4.1",
     "connect-mongodb-session": "^2.4.1",
+    "dompurify": "^2.3.0",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-flash": "0.0.2",
@@ -31,7 +37,9 @@
     "nodemon": "^2.0.9",
     "pug": "^3.0.2",
     "sanitize-html": "^2.4.0",
-    "validator": "^13.6.0"
+    "validator": "^13.6.0",
+    "webpack": "^5.47.1",
+    "webpack-cli": "^4.7.2"
   },
   "devDependencies": {
     "eslint": "^7.30.0"

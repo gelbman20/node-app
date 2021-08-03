@@ -20,4 +20,7 @@ router.get('/post/:id/edit', postController.viewEditScreen)
 router.post('/post/:id/edit', userController.mustBeLoggedIn, postController.edit)
 router.post('/post/:id/delete', userController.mustBeLoggedIn, postController.delete)
 
+// Search
+router.post('/search', postController.search)
+
 module.exports = router

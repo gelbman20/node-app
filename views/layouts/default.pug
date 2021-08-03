@@ -13,5 +13,19 @@ html
     title= title
   body.d-flex.flex-column
     block content
+    if (user)
+      .search-overlay(data-search-overlay='')
+        .search-overlay-top.shadow-sm
+          .container.container--narrow
+            label.search-overlay-icon(for='live-search-field'): i.fe.fe-search
+            input#live-search-field.live-search-field(type='text' placeholder='What are you interested in?')
+            span.close-live-search(data-search-close=''): i.fe.fe-x-circle
+        .search-overlay-bottom
+          .container.container--narrow.py-3
+            .circle-loader(data-search-loader='')
+            .live-search-results(data-live-search-results='')
+              .card
+                .list-group.shadow-sm(data-live-search-results-list='')
     script(src='/js/vendor.bundle.js')
     script(src='/js/theme.bundle.js')
+    script(src='/js/app.js')
