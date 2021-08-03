@@ -99,9 +99,30 @@ const appInit = async (callback) => {
        *
        * @param {ObjectID} followedId
        * @param {ObjectId} authorId
+       * @return {Promise<Document<any, any, unknown>>}
        */
       static createFollow (followedId, authorId) {
         return new Follow({ followedId, authorId }).save()
+      }
+
+      /**
+       *
+       * @param {ObjectID} followedId
+       * @param {ObjectId} visitorId
+       * @return {Promise<Document<any, any, unknown> | null>}
+       */
+      static isFollowing (followedId, visitorId) {
+        return Follow.findOne({ followedId: followedId, authorId: visitorId }).exec()
+      }
+
+      /**
+       *
+       * @param {ObjectID} followedId
+       * @param {ObjectId} visitorId
+       * @return {Promise<Document<any, any, unknown> | null>}
+       */
+      static removeFollow (followedId, visitorId) {
+        return Follow.findOneAndRemove({ followedId: followedId, authorId: visitorId }).exec()
       }
     }
 
