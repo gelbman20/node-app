@@ -82,6 +82,11 @@ const appInit = async (callback) => {
       static deletePost (id) {
         return Post.findByIdAndDelete(id).exec()
       }
+
+      static getAllPostsByTerm (term) {
+        const regex = new RegExp(term, 'i')
+        return Post.find().or([{ title: regex }, { 'body': regex }]).populate('author').exec()
+      }
     }
 
     callback()
