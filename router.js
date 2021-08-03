@@ -27,4 +27,6 @@ router.post('/search', postController.search)
 // Follow
 router.post('/follow/:username', userController.mustBeLoggedIn, followController.addFollow)
 
+router.get('/404', (req, res) => res.render('404'))
+
 module.exports = router
