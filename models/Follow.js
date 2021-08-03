@@ -23,13 +23,38 @@ module.exports = class Follow {
     }
   }
 
-  async validate () {
+  /**
+   *
+   * @param {'create'|'delete'} action
+   * @return {Promise<void>}
+   */
+  async validate (action) {
     try {
       // followedUsername must be exist in database
       const user = await User.getUser(this.followedUsername)
       if (user) {
         this.followedId = user._id
       }
+
+      // check is follow ready exist
+      const isFollowReadyExist = await DB.isFollowing(this.followedId, this.authorId)
+
+      if (action === 'create') {
+        if (isFollowReadyExist) {
+          this.errors.push(`You already followed on ${this.followedUsername}`)
+        }
+      }
+
+      if (action === 'delete') {
+        if (!isFollowReadyExist) {
+          this.errors.push(`You cannot stop following on ${this.followedUsername} you must be follow`)
+        }
+      }
+
+      if (this.followedId == this.authorId) {
+        this.errors.push('You cannot follow yourself')
+      }
+
     } catch (errors) {
       if (errors === null) {
         this.errors.push('You cannot follow a user that does not exist')
@@ -42,7 +67,7 @@ module.exports = class Follow {
   async create () {
     try {
       this.cleanUp()
-      await this.validate()
+      await this.validate('create')
 
       if (!this.errors.length) {
         const follow = await DB.createFollow(this.followedId, this.authorId)
@@ -54,6 +79,36 @@ module.exports = class Follow {
         }
       } else {
         return Promise.reject(this.errors)
+      }
+    } catch (errors) {
+      return Promise.reject(errors)
+    }
+  }
+
+  async remove () {
+    try {
+      this.cleanUp()
+      await this.validate('delete')
+
+      if (!this.errors.length) {
+        await DB.removeFollow(this.followedId, this.authorId)
+        return Promise.resolve()
+      } else {
+        return Promise.reject(this.errors)
+      }
+    } catch (errors) {
+      return Promise.reject(errors)
+    }
+  }
+
+  static async isVisitorFollowing (followedId, visitorId) {
+    try {
+      const isFollowing = await DB.isFollowing(followedId, visitorId)
+
+      if (isFollowing) {
+        return Promise.resolve(true)
+      } else {
+        return Promise.resolve(false)
       }
     } catch (errors) {
       return Promise.reject(errors)
