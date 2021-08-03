@@ -11,7 +11,7 @@ block content
       h2
         img.avatar.rounded-circle.mr-2(src= userProfile.avatar)
         span= userProfile.username
-        form.ml-2.d-inline(action='#' method='POST')
+        form.ml-2.d-inline(action=`/follow/${userProfile.username}` method='POST')
           button.btn.btn-primary.btn-sm
             | Follow
             i.fas.fa-user-plus
