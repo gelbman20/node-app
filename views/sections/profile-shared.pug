@@ -1,0 +1,17 @@
+h2
+  img.avatar.rounded-circle.mr-2(src= userProfile.avatar)
+  span= userProfile.username
+
+  if (userProfile._id != visitorId)
+    if (isFollowing)
+      form.ml-2.d-inline(action=`/removeFollow/${userProfile.username}` method='POST')
+        button(class='btn btn-danger btn-sm') Stop Following
+          i.fe.fe-minus.align-middle.ml-2
+    else
+      form.ml-2.d-inline(action=`/follow/${userProfile.username}` method='POST')
+        button.btn.btn-primary.btn-sm.align-middle.ml-2 Follow
+          i.fe.fe-plus
+.profile-nav.nav.nav-tabs.pt-2.mb-4
+  a.profile-nav-link.nav-item.nav-link(href=`/profile/${userProfile.username}` class= page === 'profile' ? 'active' : '')= `Posts: ${posts.length || 0}`
+  a.profile-nav-link.nav-item.nav-link(href=`/profile/${userProfile.username}/followers` class= page === 'followers' ? 'active' : '')= `Followers: ${followers.length || 0}`
+  a.profile-nav-link.nav-item.nav-link(href=`/profile/${userProfile.username}/following` class= page === 'following' ? 'active' : '')= `Following: ${(following && following.length) || 0}`

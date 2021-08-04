@@ -18,11 +18,11 @@ block content
         .card-body
           // h2.mb-4.pr-4 Example Post Title Here
           .row.align-items-center
-            .col-auto: a.avatar(href=`/users/${post.author._id}`): img.avatar-img.rounded-circle(src= post.author.avatar alt='...')
+            .col-auto: a.avatar(href=`/profile/${post.author.username}`): img.avatar-img.rounded-circle(src= post.author.avatar alt='...')
             .col.ms-n2
               // Title
               h4.mb-1 Posted by
-                a.link-primary.ml-1(href=`/users/${post.author._id}`)= post.author.username
+                a.link-primary.ml-1(href=`/profile/${post.author.username}`)= post.author.username
               // Time
               p.card-text.small.text-muted
                 span.fe.fe-clock

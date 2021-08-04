@@ -26,6 +26,13 @@ const appInit = async (callback) => {
 
     const Post = mongoose.model('Post', postScheme)
 
+    const followScheme = new Schema({
+      followedId: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+      authorId: [{ type: Schema.Types.ObjectId, ref: 'User' }]
+    })
+
+    const Follow = mongoose.model('Follow', followScheme)
+
     module.exports = class DB {
       static saveUser ({ username, email, password }) {
         const salt = bcrypt.genSaltSync(10)
@@ -74,6 +81,10 @@ const appInit = async (callback) => {
         return Post.find({ author: id }).exec()
       }
 
+      static async getAllByAuthorsId (ids) {
+        return Post.find().populate('author').sort({ 'createdDate': -1 }).where('author').in(ids).exec()
+      }
+
       /**
        * This function delete Post
        * @param id
@@ -86,6 +97,54 @@ const appInit = async (callback) => {
       static getAllPostsByTerm (term) {
         const regex = new RegExp(term, 'i')
         return Post.find().or([{ title: regex }, { 'body': regex }]).populate('author').exec()
+      }
+
+      /**
+       *
+       * @param {ObjectID} followedId
+       * @param {ObjectId} authorId
+       * @return {Promise<Document<any, any, unknown>>}
+       */
+      static createFollow (followedId, authorId) {
+        return new Follow({ followedId, authorId }).save()
+      }
+
+      /**
+       *
+       * @param {ObjectID} followedId
+       * @param {ObjectId} visitorId
+       * @return {Promise<Document<any, any, unknown> | null>}
+       */
+      static isFollowing (followedId, visitorId) {
+        return Follow.findOne({ followedId: followedId, authorId: visitorId }).exec()
+      }
+
+      /**
+       *
+       * @param {ObjectID} followedId
+       * @param {ObjectId} visitorId
+       * @return {Promise<Document<any, any, unknown> | null>}
+       */
+      static removeFollow (followedId, visitorId) {
+        return Follow.findOneAndRemove({ followedId: followedId, authorId: visitorId }).exec()
+      }
+
+      /**
+       *
+       * @param {ObjectID} followedId
+       * @return {Promise<Array<EnforceDocument<unknown, {}>>>}
+       */
+      static getFollowersById (followedId) {
+        return Follow.find({ followedId: followedId }).populate('authorId').exec()
+      }
+
+      /**
+       *
+       * @param {ObjectID} followerId
+       * @return {Promise<Array<EnforceDocument<unknown, {}>>>}
+       */
+      static getFollowingBeId (followerId) {
+        return Follow.find({ authorId: followerId }).populate('followedId').exec()
       }
     }
 

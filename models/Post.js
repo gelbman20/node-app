@@ -9,10 +9,11 @@ const getAvatar = require('./User').getAvatar
  * @param body
  * @param author
  * @param createdDate
+ * @param visitorId
  * @param other
  * @returns {{createdDate, author: (*&{avatar: string}), _id, title, body}}
  */
-const defaultPost = ({ _id, title, body, author, createdDate }, visitorId) => {
+const defaultPost = ({ _id, title, body, author, createdDate }, visitorId = null) => {
   const post = {
     _id,
     title: sanitizeHTML(title.trim(), { allowedTags: [], allowedAttributes: {} }),
@@ -122,6 +123,7 @@ module.exports = class Post {
   /**
    *
    * @param {ObjectID} id
+   * @param {ObjectID} visitorId
    */
   static async getOne (id, visitorId) {
     try {
@@ -136,6 +138,21 @@ module.exports = class Post {
     try {
       const posts = await DB.getAllByAuthorId(id)
       if (posts) {
+        return Promise.resolve(posts)
+      }
+
+      return Promise.resolve([])
+    } catch (errors) {
+      return Promise.reject(errors)
+    }
+  }
+
+  static async getAllByAuthorsId (ids) {
+    try {
+      let posts = await DB.getAllByAuthorsId(ids)
+
+      if (posts) {
+        posts = posts.map(post => defaultPost(post))
         return Promise.resolve(posts)
       }
 
