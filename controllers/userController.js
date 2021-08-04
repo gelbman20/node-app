@@ -12,15 +12,30 @@ exports.mustBeLoggedIn = function (req, res, next) {
   }
 }
 
-exports.home = function (req, res) {
-  const user = req.session.user || null
+exports.home = async (req, res) => {
+  try {
+    const user = req.session.user || null
 
-  if (user) {
-    res.render('home-logged')
-    return true
+    if (user) {
+      const { _id } = user
+      const followings = await Follow.getFollowingBeId(_id)
+      let followingsPosts = []
+
+
+      if (followings && followings.length) {
+        const ids = followings.map(({ _id }) => _id)
+        followingsPosts = await Post.getAllByAuthorsId(ids)
+      }
+
+      console.log(followingsPosts)
+
+      res.render('home-logged', { followingsPosts })
+      return true
+    }
+    res.render('index', { title: 'Node app' })
+  } catch (errors) {
+    res.redirect('404')
   }
-
-  res.render('index', { title: 'Node app' })
 }
 
 exports.login = async function (req, res) {
@@ -95,12 +110,45 @@ exports.profilePostsScreen = async (req, res) => {
   try {
     const { userProfile, isFollowing, visitorId } = req
     if (userProfile) {
-      let posts = await Post.getAllByAuthorId(userProfile._id)
-      res.render('profile', { userProfile, posts, isFollowing, visitorId })
+      const { _id } = userProfile
+      const [posts, followers, following] = await Promise.all([Post.getAllByAuthorId(_id), Follow.getFollowersById(_id), Follow.getFollowingBeId(_id)])
+      res.render('profile', { userProfile, posts, isFollowing, visitorId, followers, following, page: 'profile' })
     } else {
-      res.render('404')
+      res.redirect('/404')
     }
   } catch (errors) {
-    res.render('404')
+    res.redirect('/404')
+  }
+}
+
+exports.profileFollowersScreen = async (req, res) => {
+  try {
+    const { userProfile, isFollowing, visitorId } = req
+
+    if (userProfile) {
+      const { _id } = userProfile
+      const [posts, followers, following] = await Promise.all([Post.getAllByAuthorId(_id), Follow.getFollowersById(_id), Follow.getFollowingBeId(_id)])
+      res.render('profile-followers', { userProfile, isFollowing, visitorId, posts, followers, following, page: 'followers' })
+    } else {
+      res.redirect('/404')
+    }
+  } catch (errors) {
+    res.redirect('/404')
+  }
+}
+
+exports.profileFollowingScreen = async (req, res) => {
+  try {
+    const { userProfile, isFollowing, visitorId } = req
+
+    if (userProfile) {
+      const { _id } = userProfile
+      const [posts, followers, following] = await Promise.all([Post.getAllByAuthorId(_id), Follow.getFollowersById(_id), Follow.getFollowingBeId(_id)])
+      res.render('profile-following', { userProfile, isFollowing, visitorId, posts, followers, following, page: 'following' })
+    } else {
+      res.redirect('/404')
+    }
+  } catch (errors) {
+    res.redirect('/404')
   }
 }
