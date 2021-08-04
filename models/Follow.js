@@ -114,4 +114,54 @@ module.exports = class Follow {
       return Promise.reject(errors)
     }
   }
+
+  static async getFollowersById (followedId) {
+    try {
+      let followers = await DB.getFollowersById(followedId)
+
+      if (followers) {
+        followers = followers.map(follower => {
+          const author = follower.authorId[0]
+          return {
+            _id: author._id,
+            username: author.username,
+            email: author.email,
+            avatar: User.getAvatar(author.email)
+          }
+        })
+
+        return Promise.resolve(followers)
+      } else {
+        return Promise.resolve([])
+      }
+
+    } catch (errors) {
+      return Promise.reject(errors)
+    }
+  }
+
+  static async getFollowingBeId (followerId) {
+    try {
+      let following = await DB.getFollowingBeId(followerId)
+
+      if (following) {
+        following = following.map(follower => {
+          const author = follower.followedId[0]
+          return {
+            _id: author._id,
+            username: author.username,
+            email: author.email,
+            avatar: User.getAvatar(author.email)
+          }
+        })
+
+        return Promise.resolve(following)
+      } else {
+        return Promise.resolve([])
+      }
+
+    } catch (errors) {
+      return Promise.reject(errors)
+    }
+  }
 }
