@@ -1,0 +1,22 @@
+extends layouts/default
+
+block content
+  // Header
+  include sections/header
+
+  main
+    .container.py-md-5
+      include components/flash
+
+      include sections/profile-shared
+
+      if (followers && followers.length)
+        .card
+          .list-group
+            each follower in followers
+              a.list-group-item.list-group-item-action(href=`/profile/${follower.username}`)
+                img.avatar.rounded-circle.mr-2.avatar-xs(src= follower.avatar)
+                strong.mr2.d-inline-block= follower.username
+
+  // Footer
+  include sections/footer
