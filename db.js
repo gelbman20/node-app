@@ -27,8 +27,8 @@ const appInit = async (callback) => {
     const Post = mongoose.model('Post', postScheme)
 
     const followScheme = new Schema({
-      followedId: mongoose.Types.ObjectId,
-      authorId: mongoose.Types.ObjectId
+      followedId: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+      authorId: [{ type: Schema.Types.ObjectId, ref: 'User' }]
     })
 
     const Follow = mongoose.model('Follow', followScheme)
@@ -81,6 +81,10 @@ const appInit = async (callback) => {
         return Post.find({ author: id }).exec()
       }
 
+      static async getAllByAuthorsId (ids) {
+        return Post.find().populate('author').sort({ 'createdDate': -1 }).where('author').in(ids).exec()
+      }
+
       /**
        * This function delete Post
        * @param id
@@ -123,6 +127,24 @@ const appInit = async (callback) => {
        */
       static removeFollow (followedId, visitorId) {
         return Follow.findOneAndRemove({ followedId: followedId, authorId: visitorId }).exec()
+      }
+
+      /**
+       *
+       * @param {ObjectID} followedId
+       * @return {Promise<Array<EnforceDocument<unknown, {}>>>}
+       */
+      static getFollowersById (followedId) {
+        return Follow.find({ followedId: followedId }).populate('authorId').exec()
+      }
+
+      /**
+       *
+       * @param {ObjectID} followerId
+       * @return {Promise<Array<EnforceDocument<unknown, {}>>>}
+       */
+      static getFollowingBeId (followerId) {
+        return Follow.find({ authorId: followerId }).populate('followedId').exec()
       }
     }
 
