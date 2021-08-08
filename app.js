@@ -6,6 +6,7 @@ const markdonw = require('marked')
 const MongoStore = require('connect-mongo')
 const router = require('./router')
 const mongoUrl = process.env.MONGOURL
+const sanitizeHTML = require('sanitize-html')
 
 const sessionOptions = session({
   secret: 'JavaScript',
@@ -63,11 +64,11 @@ io.use((socket, next) => {
 io.on('connection', (socket) => {
   if (socket.request.session.user) {
     let user = socket.request.session.user
+
+    socket.emit('welcome', { user })
+
     socket.on('chatMessageFromBrowser', (data) => {
-      io.emit('chatMessageFromServer', {
-        user,
-        message: data.message
-      })
+      socket.broadcast.emit('chatMessageFromServer', { user, message:  sanitizeHTML(data.message, { allowedTags: [], allowedAttributes: {} })})
     })
   }
 })

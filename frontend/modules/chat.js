@@ -1,3 +1,5 @@
+import dompurify from 'dompurify'
+
 export default class Chat {
   /**
    *
@@ -31,6 +33,17 @@ export default class Chat {
     this.socket.emit('chatMessageFromBrowser', {
       message: this.chatField.value
     })
+    this.chatLog.insertAdjacentHTML('beforeend', dompurify.sanitize(`
+      <div class="chat-self">
+        <div class="chat-message">
+            <div class="chat-message-inner">
+                ${this.chatField.value}
+            </div>
+        </div>
+        <img src="${this.user.avatar}" alt="${this.user.username}" class="chat-avatar avatar-xs rounded-circle">
+      </div>    
+    `))
+    this.chatLog.scrollTop = this.chatLog.scrollHeight
     this.chatField.value = ''
     this.chatField.focus()
   }
@@ -52,6 +65,10 @@ export default class Chat {
 
   openConnection () {
     this.socket = io()
+    this.socket.on('welcome', (data) => {
+      this.user = data.user
+    })
+
     this.socket.on('chatMessageFromServer', (data) => {
       this.displayMessageFromServer(data)
     })
@@ -68,7 +85,7 @@ export default class Chat {
    * @param {String} data.user._id
    */
   displayMessageFromServer (data) {
-    this.chatLog.insertAdjacentHTML('beforeend', `
+    this.chatLog.insertAdjacentHTML('beforeend', dompurify.sanitize(`
     <div class="chat-other">
       <a href="/profile/${data.user.username}">
           <img class="avatar avatar-xs rounded-circle" src="${data.user.avatar}" alt="${data.user.username}">
@@ -84,7 +101,8 @@ export default class Chat {
         </div>
       </div>
     </div>
-    `)
+    `))
+    this.chatLog.scrollTop = this.chatLog.scrollHeight
   }
 
   injectHTML () {
