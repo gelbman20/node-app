@@ -14,6 +14,7 @@ html
   body.d-flex.flex-column
     block content
     if (user)
+      .chat-wrapper.border-top.border-left.border-right.shadow#chat-wrapper
       .search-overlay(data-search-overlay='')
         .search-overlay-top.shadow-sm
           .container.container--narrow
