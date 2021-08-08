@@ -33,7 +33,7 @@ export default class Chat {
   }
 
   openConnection () {
-
+    this.socket = io()
   }
 
   injectHTML () {
@@ -50,7 +50,7 @@ export default class Chat {
               Hello, how are you?
             </div>
           </div>
-          <img class="chat-avatar avatar-xs rounded-circle" src="https://gravatar.com/avatar/f64fc44c03a8a7eb1d52502950879659?s=128">
+          <img class="chat-avatar avatar-xs rounded-circle" src="https://gravatar.com/avatar/f64fc44c03a8a7eb1d52502950879659?s=128" alt="">
         </div>
         <!-- end template-->
         
