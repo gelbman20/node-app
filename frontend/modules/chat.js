@@ -8,6 +8,8 @@ export default class Chat {
     this.chatWrapper = chatWrapper
     this.openIcon = document.querySelector('[data-header-chat-icon]')
     this.injectHTML()
+    this.chatField = document.querySelector('#chatField')
+    this.chatForm = document.querySelector('#chatForm')
     this.closeIcon = document.querySelector('.chat-title-bar-close')
     this.events()
   }
@@ -16,6 +18,20 @@ export default class Chat {
   events () {
     this.openIcon.addEventListener('click', () => this.showChat())
     this.closeIcon.addEventListener('click', () => this.hideChat())
+
+    this.chatForm.addEventListener('submit', (e) => {
+      e.preventDefault()
+
+      this.sendMessageToServer()
+    })
+  }
+
+  sendMessageToServer () {
+    this.socket.emit('chatMessageFromBrowser', {
+      message: this.chatField.value
+    })
+    this.chatField.value = ''
+    this.chatField.focus()
   }
 
   // Methods
@@ -26,6 +42,7 @@ export default class Chat {
 
     this.openedYet = true
     this.chatWrapper.classList.add('chat--visible')
+    this.chatField.focus()
   }
 
   hideChat () {
@@ -34,6 +51,9 @@ export default class Chat {
 
   openConnection () {
     this.socket = io()
+    this.socket.on('chatMessageFromServer', (data) => {
+      console.log(data.message)
+    })
   }
 
   injectHTML () {
@@ -41,33 +61,7 @@ export default class Chat {
     <div class="chat-title-bar">Chat 
       <span class="chat-title-bar-close"><i class="fe fe-x-circle"></i></span>
     </div>
-      <div id="chat" class="chat-log">
-    
-        <!-- template for your own message -->
-        <div class="chat-self">
-          <div class="chat-message">
-            <div class="chat-message-inner">
-              Hello, how are you?
-            </div>
-          </div>
-          <img class="chat-avatar avatar-xs rounded-circle" src="https://gravatar.com/avatar/f64fc44c03a8a7eb1d52502950879659?s=128" alt="">
-        </div>
-        <!-- end template-->
-        
-        <!-- template for messages from others -->
-        <div class="chat-other">
-          <a href="#">
-              <img class="avatar avatar-xs rounded-circle" src="https://gravatar.com/avatar/b9216295c1e3931655bae6574ac0e4c2?s=128" alt="">
-          </a>
-          <div class="chat-message"><div class="chat-message-inner">
-            <a href="#"><strong>barksalot:</strong></a>
-            I am doing well. How about you?
-          </div>
-          </div>
-        </div>
-        <!-- end template-->
-        
-      </div>
+      <div id="chat" class="chat-log"></div>
     
       <form id="chatForm" class="chat-form border-top">
         <input type="text" class="chat-field" id="chatField" placeholder="Type a message…" autocomplete="off">
