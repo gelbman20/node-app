@@ -8,6 +8,7 @@ export default class Chat {
     this.chatWrapper = chatWrapper
     this.openIcon = document.querySelector('[data-header-chat-icon]')
     this.injectHTML()
+    this.chatLog = document.querySelector('#chat')
     this.chatField = document.querySelector('#chatField')
     this.chatForm = document.querySelector('#chatForm')
     this.closeIcon = document.querySelector('.chat-title-bar-close')
@@ -52,8 +53,38 @@ export default class Chat {
   openConnection () {
     this.socket = io()
     this.socket.on('chatMessageFromServer', (data) => {
-      console.log(data.message)
+      this.displayMessageFromServer(data)
     })
+  }
+
+  /**
+   *
+   * @param {Object} data
+   * @param {String} data.message
+   * @param {Object} data.user
+   * @param {String} data.user.avatar
+   * @param {String} data.user.email
+   * @param {String} data.user.username
+   * @param {String} data.user._id
+   */
+  displayMessageFromServer (data) {
+    this.chatLog.insertAdjacentHTML('beforeend', `
+    <div class="chat-other">
+      <a href="/profile/${data.user.username}">
+          <img class="avatar avatar-xs rounded-circle" src="${data.user.avatar}" alt="${data.user.username}">
+      </a>
+      <div class="chat-message">
+        <div class="chat-message-inner">
+          <a href="#">
+              <strong>
+                  ${data.user.username}
+              </strong>
+          </a>
+            ${data.message}
+        </div>
+      </div>
+    </div>
+    `)
   }
 
   injectHTML () {
