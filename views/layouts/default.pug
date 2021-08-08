@@ -15,6 +15,7 @@ html
     block content
     if (user)
       .chat-wrapper.border-top.border-left.border-right.shadow#chat-wrapper
+      script(src='/socket.io/socket.io.js')
       .search-overlay(data-search-overlay='')
         .search-overlay-top.shadow-sm
           .container.container--narrow
