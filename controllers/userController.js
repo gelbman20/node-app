@@ -112,7 +112,7 @@ exports.profilePostsScreen = async (req, res) => {
     if (userProfile) {
       const { _id } = userProfile
       const [posts, followers, following] = await Promise.all([Post.getAllByAuthorId(_id), Follow.getFollowersById(_id), Follow.getFollowingBeId(_id)])
-      res.render('profile', { userProfile, posts, isFollowing, visitorId, followers, following, page: 'profile' })
+      res.render('profile', { userProfile, posts, isFollowing, visitorId, followers, following, page: 'profile', title: `Profile for ${userProfile.username}` })
     } else {
       res.redirect('/404')
     }
@@ -128,7 +128,7 @@ exports.profileFollowersScreen = async (req, res) => {
     if (userProfile) {
       const { _id } = userProfile
       const [posts, followers, following] = await Promise.all([Post.getAllByAuthorId(_id), Follow.getFollowersById(_id), Follow.getFollowingBeId(_id)])
-      res.render('profile-followers', { userProfile, isFollowing, visitorId, posts, followers, following, page: 'followers' })
+      res.render('profile-followers', { userProfile, isFollowing, visitorId, posts, followers, following, page: 'followers', title: `Profile for ${userProfile.username}` })
     } else {
       res.redirect('/404')
     }
@@ -144,7 +144,7 @@ exports.profileFollowingScreen = async (req, res) => {
     if (userProfile) {
       const { _id } = userProfile
       const [posts, followers, following] = await Promise.all([Post.getAllByAuthorId(_id), Follow.getFollowersById(_id), Follow.getFollowingBeId(_id)])
-      res.render('profile-following', { userProfile, isFollowing, visitorId, posts, followers, following, page: 'following' })
+      res.render('profile-following', { userProfile, isFollowing, visitorId, posts, followers, following, page: 'following', title: `Profile for ${userProfile.username}` })
     } else {
       res.redirect('/404')
     }

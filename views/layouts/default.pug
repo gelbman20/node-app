@@ -10,7 +10,7 @@ html
     - if (theme === 'dark')
       link(rel='stylesheet' href='/css/theme-dark.bundle.css')
     link(rel='stylesheet' href='/css/custom.css')
-    title= title
+    title= title !== undefined ? title : 'Node App'
   body.d-flex.flex-column
     block content
     if (user)

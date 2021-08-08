@@ -30,6 +30,6 @@ router.post('/search', postController.search)
 router.post('/follow/:username', userController.mustBeLoggedIn, followController.addFollow)
 router.post('/removeFollow/:username', userController.mustBeLoggedIn, followController.removeFollow)
 
-router.get('/404', (req, res) => res.render('404'))
+router.get('/404', (req, res) => res.render('404', { title: 'Whoops, we cannot find that page.' }))
 
 module.exports = router

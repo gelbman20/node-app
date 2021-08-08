@@ -1,7 +1,7 @@
 const Post = require('../models/Post')
 
 exports.viewCreateScreen = function (req, res) {
-  res.render('create-post')
+  res.render('create-post', { title: 'Create a new post' })
 }
 
 exports.create = async function (req, res) {
@@ -21,7 +21,7 @@ exports.create = async function (req, res) {
 exports.viewSingle = async function (req, res) {
   try {
     const post = await Post.getOne(req.params.id, req.visitorId)
-    res.render('post', { post })
+    res.render('post', { post, title: post.title })
   } catch (errors) {
     res.render('404')
   }
@@ -32,7 +32,7 @@ exports.viewEditScreen = async (req, res) => {
     const post = await Post.getOne(req.params.id, req.visitorId)
     const { isAuthor } = post
     if (isAuthor) {
-      res.render('edit-post', { post })
+      res.render('edit-post', { post, title: post.title })
     } else {
       res.redirect(`/post/${post._id}`)
     }
