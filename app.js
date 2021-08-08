@@ -52,4 +52,12 @@ app.use((req, res, next) => {
 
 app.use('/', router)
 
-module.exports = app
+const server = require('http').createServer(app)
+
+const io = require('socket.io')(server)
+
+io.on('connection', () => {
+  console.log('A new user connected.')
+})
+
+module.exports = server
