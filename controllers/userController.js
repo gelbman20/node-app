@@ -75,6 +75,33 @@ exports.logout = (req, res) => {
   req.session.destroy(() => res.redirect('/'))
 }
 
+exports.doesUserExist = async (req, res) => {
+  try {
+    const user = await User.getUser(req.body.username)
+    if (user) {
+      res.json(true)
+    } else {
+      res.json(false)
+    }
+  } catch (errors) {
+    res.json(false)
+  }
+}
+
+exports.doesEmailExist = async (req, res) => {
+  try {
+    const user = await User.getUserByEmail(req.body.email)
+
+    if (user) {
+      res.json(true)
+    } else {
+      res.json(false)
+    }
+  } catch (errors) {
+    res.json(false)
+  }
+}
+
 exports.ifUserExists = async (req, res, next) => {
   try {
     const user = await User.getUser(req.params.username)

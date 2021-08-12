@@ -159,6 +159,23 @@ module.exports = class User {
     }
   }
 
+  static async getUserByEmail (email) {
+    try {
+      const user = await DB.getUser({ email })
+      if (user) {
+        return Promise.resolve({
+          _id: user._id,
+          username: user.username,
+          avatar: User.getAvatar(user.email)
+        })
+      }
+
+      return Promise.reject(null)
+    } catch (errors) {
+      return Promise.reject(errors)
+    }
+  }
+
   static getAvatar (email) {
     return `https://gravatar.com/avatar/${md5(email)}?s=128`
   }

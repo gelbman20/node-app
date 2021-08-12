@@ -9,6 +9,8 @@ router.get('/', userController.home)
 router.post('/login', userController.login)
 router.post('/register', userController.register)
 router.post('/logout', userController.logout)
+router.post('/doesUsernameExist', userController.doesUserExist)
+router.post('/doesEmailExist', userController.doesEmailExist)
 
 // Profile
 router.get('/profile/:username', userController.ifUserExists, userController.sharedProfileData, userController.profilePostsScreen)

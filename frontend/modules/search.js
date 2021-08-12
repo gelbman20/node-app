@@ -40,7 +40,7 @@ export default class Search {
     this.closeIcon = document.querySelector('[data-search-close]')
     this.inputField = document.querySelector('#live-search-field')
     this.resultArea = document.querySelector('[data-live-search-results]')
-    this.resultList = this.resultArea.querySelector('[data-live-search-results-list]')
+    this.resultList = this.resultArea?.querySelector('[data-live-search-results-list]')
     this.loaderIcon = document.querySelector('[data-search-loader]')
     this.typingWaitTime = null
     this.previousValue = ''

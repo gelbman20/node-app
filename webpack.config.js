@@ -7,7 +7,7 @@ module.exports = {
     filename: 'app.js',
     path: path.resolve(__dirname, 'public/js/')
   },
-  mode: 'production',
+  mode: 'development',
   module: {
     rules: [
       {

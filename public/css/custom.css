@@ -242,3 +242,34 @@ html {
     outline: none;
     font-size: .75rem;
 }
+
+/**
+ * Form
+*/
+
+.form-group {
+    position: relative;
+}
+
+.liveValidateMessage {
+    transition: all .5s ease-out;
+    top: -6px;
+    left: 0;
+    right: 0;
+    position: absolute;
+    z-index: 1;
+    padding-top: 6px;
+    padding-bottom: 16px;
+    opacity: 0;
+    transform: translateY(50%)
+}
+
+.form-control {
+    position: relative;
+    z-index: 2;
+}
+
+.liveValidateMessage--visible {
+    opacity: 1;
+    transform: translateY(0)
+}
